@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cmcc.system.dao.VisitorInfoDao">
+  <resultMap id="BaseResultMap" type="com.cmcc.system.entity.VisitorInfo">
+    <id column="visitor_info_id" jdbcType="VARCHAR" property="visitorInfoId" />
+    <result column="visitor_type" jdbcType="BIT" property="visitorType" />
+    <result column="visitor_regist_id" jdbcType="VARCHAR" property="visitorRegistId" />
+    <result column="visitor_name" jdbcType="VARCHAR" property="visitorName" />
+    <result column="visitor_phonenumber" jdbcType="VARCHAR" property="visitorPhonenumber" />
+    <result column="visitor_idcard" jdbcType="VARCHAR" property="visitorIdcard" />
+    <result column="visitor_company" jdbcType="VARCHAR" property="visitorCompany" />
+    <result column="entry_time" jdbcType="TIMESTAMP" property="entryTime" />
+    <result column="departure_time" jdbcType="TIMESTAMP" property="departureTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    visitor_info_id, visitor_type, visitor_regist_id, visitor_name, visitor_phonenumber, 
+    visitor_idcard, visitor_company, entry_time, departure_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from visitor_info
+    where visitor_info_id = #{visitorInfoId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from visitor_info
+    where visitor_info_id = #{visitorInfoId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cmcc.system.entity.VisitorInfo">
+    insert into visitor_info (visitor_info_id, visitor_type, visitor_regist_id, 
+      visitor_name, visitor_phonenumber, visitor_idcard, 
+      visitor_company, entry_time, departure_time
+      )
+    values (#{visitorInfoId,jdbcType=VARCHAR}, #{visitorType,jdbcType=BIT}, #{visitorRegistId,jdbcType=VARCHAR}, 
+      #{visitorName,jdbcType=VARCHAR}, #{visitorPhonenumber,jdbcType=VARCHAR}, #{visitorIdcard,jdbcType=VARCHAR}, 
+      #{visitorCompany,jdbcType=VARCHAR}, #{entryTime,jdbcType=TIMESTAMP}, #{departureTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cmcc.system.entity.VisitorInfo">
+    insert into visitor_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="visitorInfoId != null">
+        visitor_info_id,
+      </if>
+      <if test="visitorType != null">
+        visitor_type,
+      </if>
+      <if test="visitorRegistId != null">
+        visitor_regist_id,
+      </if>
+      <if test="visitorName != null">
+        visitor_name,
+      </if>
+      <if test="visitorPhonenumber != null">
+        visitor_phonenumber,
+      </if>
+      <if test="visitorIdcard != null">
+        visitor_idcard,
+      </if>
+      <if test="visitorCompany != null">
+        visitor_company,
+      </if>
+      <if test="entryTime != null">
+        entry_time,
+      </if>
+      <if test="departureTime != null">
+        departure_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="visitorInfoId != null">
+        #{visitorInfoId,jdbcType=VARCHAR},
+      </if>
+      <if test="visitorType != null">
+        #{visitorType,jdbcType=BIT},
+      </if>
+      <if test="visitorRegistId != null">
+        #{visitorRegistId,jdbcType=VARCHAR},
+      </if>
+      <if test="visitorName != null">
+        #{visitorName,jdbcType=VARCHAR},
+      </if>
+      <if test="visitorPhonenumber != null">
+        #{visitorPhonenumber,jdbcType=VARCHAR},
+      </if>
+      <if test="visitorIdcard != null">
+        #{visitorIdcard,jdbcType=VARCHAR},
+      </if>
+      <if test="visitorCompany != null">
+        #{visitorCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="entryTime != null">
+        #{entryTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="departureTime != null">
+        #{departureTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cmcc.system.entity.VisitorInfo">
+    update visitor_info
+    <set>
+      <if test="visitorType != null">
+        visitor_type = #{visitorType,jdbcType=BIT},
+      </if>
+      <if test="visitorRegistId != null">
+        visitor_regist_id = #{visitorRegistId,jdbcType=VARCHAR},
+      </if>
+      <if test="visitorName != null">
+        visitor_name = #{visitorName,jdbcType=VARCHAR},
+      </if>
+      <if test="visitorPhonenumber != null">
+        visitor_phonenumber = #{visitorPhonenumber,jdbcType=VARCHAR},
+      </if>
+      <if test="visitorIdcard != null">
+        visitor_idcard = #{visitorIdcard,jdbcType=VARCHAR},
+      </if>
+      <if test="visitorCompany != null">
+        visitor_company = #{visitorCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="entryTime != null">
+        entry_time = #{entryTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="departureTime != null">
+        departure_time = #{departureTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where visitor_info_id = #{visitorInfoId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cmcc.system.entity.VisitorInfo">
+    update visitor_info
+    set visitor_type = #{visitorType,jdbcType=BIT},
+      visitor_regist_id = #{visitorRegistId,jdbcType=VARCHAR},
+      visitor_name = #{visitorName,jdbcType=VARCHAR},
+      visitor_phonenumber = #{visitorPhonenumber,jdbcType=VARCHAR},
+      visitor_idcard = #{visitorIdcard,jdbcType=VARCHAR},
+      visitor_company = #{visitorCompany,jdbcType=VARCHAR},
+      entry_time = #{entryTime,jdbcType=TIMESTAMP},
+      departure_time = #{departureTime,jdbcType=TIMESTAMP}
+    where visitor_info_id = #{visitorInfoId,jdbcType=VARCHAR}
+  </update>
+</mapper>

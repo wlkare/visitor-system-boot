@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cmcc.system.dao.VisitorSettingDao">
+  <resultMap id="BaseResultMap" type="com.cmcc.system.entity.VisitorSetting">
+    <id column="visitor_purpose_id" jdbcType="VARCHAR" property="visitorPurposeId" />
+    <result column="lessee_id" jdbcType="VARCHAR" property="lesseeId" />
+    <result column="visit_purpose" jdbcType="VARCHAR" property="visitPurpose" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    visitor_purpose_id, lessee_id, visit_purpose
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from visitor_setting
+    where visitor_purpose_id = #{visitorPurposeId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from visitor_setting
+    where visitor_purpose_id = #{visitorPurposeId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cmcc.system.entity.VisitorSetting">
+    insert into visitor_setting (visitor_purpose_id, lessee_id, visit_purpose
+      )
+    values (#{visitorPurposeId,jdbcType=VARCHAR}, #{lesseeId,jdbcType=VARCHAR}, #{visitPurpose,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cmcc.system.entity.VisitorSetting">
+    insert into visitor_setting
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="visitorPurposeId != null">
+        visitor_purpose_id,
+      </if>
+      <if test="lesseeId != null">
+        lessee_id,
+      </if>
+      <if test="visitPurpose != null">
+        visit_purpose,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="visitorPurposeId != null">
+        #{visitorPurposeId,jdbcType=VARCHAR},
+      </if>
+      <if test="lesseeId != null">
+        #{lesseeId,jdbcType=VARCHAR},
+      </if>
+      <if test="visitPurpose != null">
+        #{visitPurpose,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cmcc.system.entity.VisitorSetting">
+    update visitor_setting
+    <set>
+      <if test="lesseeId != null">
+        lessee_id = #{lesseeId,jdbcType=VARCHAR},
+      </if>
+      <if test="visitPurpose != null">
+        visit_purpose = #{visitPurpose,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where visitor_purpose_id = #{visitorPurposeId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cmcc.system.entity.VisitorSetting">
+    update visitor_setting
+    set lessee_id = #{lesseeId,jdbcType=VARCHAR},
+      visit_purpose = #{visitPurpose,jdbcType=VARCHAR}
+    where visitor_purpose_id = #{visitorPurposeId,jdbcType=VARCHAR}
+  </update>
+
+  <select id="selectAllPurposeByLesseeId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from visitor_setting
+    where lessee_id = #{lesseeId}
+  </select>
+</mapper>

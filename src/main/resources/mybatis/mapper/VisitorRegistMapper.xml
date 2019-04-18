@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cmcc.system.dao.VisitorRegistDao">
+  <resultMap id="BaseResultMap" type="com.cmcc.system.entity.VisitorRegist">
+    <id column="visitor_regist_id" jdbcType="VARCHAR" property="visitorRegistId" />
+    <result column="visitor_purpose" jdbcType="VARCHAR" property="visitorPurpose" />
+    <result column="lessee_id" jdbcType="VARCHAR" property="lesseeId" />
+    <result column="receiver_name" jdbcType="VARCHAR" property="receiverName" />
+    <result column="receiver_phone_number" jdbcType="VARCHAR" property="receiverPhoneNumber" />
+    <result column="creation_time" jdbcType="TIMESTAMP" property="creationTime" />
+    <result column="approval_time" jdbcType="TIMESTAMP" property="approvalTime" />
+    <result column="process_approval_status" jdbcType="TINYINT" property="processApprovalStatus" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    visitor_regist_id, visitor_purpose, lessee_id, receiver_name, receiver_phone_number, 
+    creation_time, approval_time, process_approval_status, remark
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from visitor_registration
+    where visitor_regist_id = #{visitorRegistId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from visitor_registration
+    where visitor_regist_id = #{visitorRegistId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cmcc.system.entity.VisitorRegist">
+    insert into visitor_registration (visitor_regist_id, visitor_purpose, 
+      lessee_id, receiver_name, receiver_phone_number, 
+      creation_time, approval_time, process_approval_status, 
+      remark)
+    values (#{visitorRegistId,jdbcType=VARCHAR}, #{visitorPurpose,jdbcType=VARCHAR}, 
+      #{lesseeId,jdbcType=VARCHAR}, #{receiverName,jdbcType=VARCHAR}, #{receiverPhoneNumber,jdbcType=VARCHAR}, 
+      #{creationTime,jdbcType=TIMESTAMP}, #{approvalTime,jdbcType=TIMESTAMP}, #{processApprovalStatus,jdbcType=TINYINT}, 
+      #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cmcc.system.entity.VisitorRegist">
+    insert into visitor_registration
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="visitorRegistId != null">
+        visitor_regist_id,
+      </if>
+      <if test="visitorPurpose != null">
+        visitor_purpose,
+      </if>
+      <if test="lesseeId != null">
+        lessee_id,
+      </if>
+      <if test="receiverName != null">
+        receiver_name,
+      </if>
+      <if test="receiverPhoneNumber != null">
+        receiver_phone_number,
+      </if>
+      <if test="creationTime != null">
+        creation_time,
+      </if>
+      <if test="approvalTime != null">
+        approval_time,
+      </if>
+      <if test="processApprovalStatus != null">
+        process_approval_status,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="visitorRegistId != null">
+        #{visitorRegistId,jdbcType=VARCHAR},
+      </if>
+      <if test="visitorPurpose != null">
+        #{visitorPurpose,jdbcType=VARCHAR},
+      </if>
+      <if test="lesseeId != null">
+        #{lesseeId,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverName != null">
+        #{receiverName,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverPhoneNumber != null">
+        #{receiverPhoneNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="creationTime != null">
+        #{creationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="approvalTime != null">
+        #{approvalTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="processApprovalStatus != null">
+        #{processApprovalStatus,jdbcType=TINYINT},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cmcc.system.entity.VisitorRegist">
+    update visitor_registration
+    <set>
+      <if test="visitorPurpose != null">
+        visitor_purpose = #{visitorPurpose,jdbcType=VARCHAR},
+      </if>
+      <if test="lesseeId != null">
+        lessee_id = #{lesseeId,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverName != null">
+        receiver_name = #{receiverName,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverPhoneNumber != null">
+        receiver_phone_number = #{receiverPhoneNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="creationTime != null">
+        creation_time = #{creationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="approvalTime != null">
+        approval_time = #{approvalTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="processApprovalStatus != null">
+        process_approval_status = #{processApprovalStatus,jdbcType=TINYINT},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where visitor_regist_id = #{visitorRegistId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cmcc.system.entity.VisitorRegist">
+    update visitor_registration
+    set visitor_purpose = #{visitorPurpose,jdbcType=VARCHAR},
+      lessee_id = #{lesseeId,jdbcType=VARCHAR},
+      receiver_name = #{receiverName,jdbcType=VARCHAR},
+      receiver_phone_number = #{receiverPhoneNumber,jdbcType=VARCHAR},
+      creation_time = #{creationTime,jdbcType=TIMESTAMP},
+      approval_time = #{approvalTime,jdbcType=TIMESTAMP},
+      process_approval_status = #{processApprovalStatus,jdbcType=TINYINT},
+      remark = #{remark,jdbcType=VARCHAR}
+    where visitor_regist_id = #{visitorRegistId,jdbcType=VARCHAR}
+  </update>
+</mapper>
