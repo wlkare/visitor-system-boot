@@ -139,4 +139,19 @@
       departure_time = #{departureTime,jdbcType=TIMESTAMP}
     where visitor_info_id = #{visitorInfoId,jdbcType=VARCHAR}
   </update>
+
+  <!--通过登记ID计算访客人数-->
+  <select id="countEntourage" resultType="int">
+    select count (*) from visitor_info
+    where visitor_regist_id = #{visitorRegistId,jdbcType=VARCHAR}
+  </select>
+
+  <!--查询申请人信息-->
+  <select id="selectApplicant" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from visitor_info
+    where visitor_regist_id = #{visitorRegistId,jdbcType=VARCHAR}
+    and visitor_type = #{visitorType,jdbcType=BIT}
+  </select>
 </mapper>

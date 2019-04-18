@@ -16,4 +16,7 @@ public interface VisitorRegistDao {
     int updateByPrimaryKeySelective(VisitorRegist record);
 
     int updateByPrimaryKey(VisitorRegist record);
+
+    //接待人通过手机号查询待审批表单
+    VisitorRegist selectByPhoneNumber(String phoneNumber);
 }

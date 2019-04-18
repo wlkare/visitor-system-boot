@@ -139,4 +139,12 @@
       remark = #{remark,jdbcType=VARCHAR}
     where visitor_regist_id = #{visitorRegistId,jdbcType=VARCHAR}
   </update>
+
+  <!--接待人通过手机号查询所有访客记录-->
+  <select id="selectByPhoneNumber" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from visitor_registration
+    where receiver_phone_number = #{receiverPhoneNumber,jdbcType=VARCHAR}
+  </select>
 </mapper>

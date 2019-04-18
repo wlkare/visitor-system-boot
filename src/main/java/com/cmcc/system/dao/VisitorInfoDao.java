@@ -16,4 +16,11 @@ public interface VisitorInfoDao {
     int updateByPrimaryKeySelective(VisitorInfo record);
 
     int updateByPrimaryKey(VisitorInfo record);
+
+    //通过访客登记ID，查询访客人员人数
+    int countEntourage(String visitorRegistId);
+
+    //通过访客登记ID、访客类型，查询申请人信息
+    VisitorInfo selectApplicant(String visitorRegistId, boolean visitorType);
+
 }
