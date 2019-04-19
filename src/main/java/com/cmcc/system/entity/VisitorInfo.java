@@ -1,5 +1,6 @@
 package com.cmcc.system.entity;
 
+
 import java.util.Date;
 
 public class VisitorInfo {
@@ -91,5 +92,14 @@ public class VisitorInfo {
 
     public void setDepartureTime(Date departureTime) {
         this.departureTime = departureTime;
+    }
+
+    public VisitorInfo() {
+    }
+
+    public VisitorInfo(Boolean visitorType, String visitorName, String visitorPhonenumber) {
+        this.visitorType = visitorType;
+        this.visitorName = visitorName;
+        this.visitorPhonenumber = visitorPhonenumber;
     }
 }
