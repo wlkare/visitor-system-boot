@@ -2,7 +2,6 @@ package com.cmcc.system.controller;
 
 import com.cmcc.common.bean.Result;
 import com.cmcc.common.bean.ResultCode;
-import com.cmcc.system.entity.VisitorInfo;
 import com.cmcc.system.service.VisitorRegistService;
 import com.cmcc.system.vo.ApplicantVo;
 import com.cmcc.system.vo.ApproalInfoVo;
@@ -113,7 +112,7 @@ public class VisitorRegistController {
     @ApiOperation(value = "接待人进行审批，即更改审批状态")
     @PostMapping("/apprrovalProcess/{visitorRegistId}/{status}")
     public Result apprrovalProcess(@ApiParam(name="visitorRegistId",value="登记ID",required=true) @PathVariable String visitorRegistId,
-                                   @ApiParam(name="status",value="审批状态，0：待审批，1：同意，2：拒绝, 3:已结束",required=true) @PathVariable Byte status){
+                                   @ApiParam(name="status",value="审批状态，1：同意，2：拒绝",required=true) @PathVariable Byte status){
         try {
             int i = visitorRegistService.apprrovalProcess(visitorRegistId, status);
             if (i > 0){
@@ -126,19 +125,18 @@ public class VisitorRegistController {
     }
 
     /**
-     * @description: 访客出入时间
+     * @description: 访客进入时间
      * @param
      * @return
      * @author Mr.Wang
      * @date 2019/4/22 16:21
      */
-    @ApiOperation(value = "访客出入时间记录")
-    @PostMapping(value = {"/visitorEntryAndLeaveTimes/{visitorInfoId}/enterTime/{leaveTime}","/visitorEntryAndLeaveTimes/{visitorInfoId}/{enterTime}"})
-    public Result visitorEntryAndLeaveTimes(@ApiParam(name="visitorInfoId",value="访客ID",required=true) @PathVariable String visitorInfoId,
-                                            @ApiParam(name="enterTime",value="访客进入时间(进出时间二选一)",required=false) @PathVariable(value = "enterTime",required = false) Date enterTime,
-                                            @ApiParam(name="leaveTime",value="访客离开时间(进出时间二选一)",required=false) @PathVariable(value = "leaveTime",required = false) Date leaveTime){
+    @ApiOperation(value = "访客进入时间记录")
+    @PostMapping(value = "/visitorEntryTimes/{visitorInfoId}/{enterTime}")
+    public Result visitorEntryTimes(@ApiParam(name="visitorInfoId",value="访客ID",required=true) @PathVariable String visitorInfoId,
+                                            @ApiParam(name="enterTime",value="访客进入时间(yyyy-MM-dd HH:mm:ss)",required=true) @PathVariable Date enterTime){
         try {
-            int i = visitorRegistService.visitorEntryAndLeaveTimes(visitorInfoId, enterTime, leaveTime);
+            int i = visitorRegistService.visitorEntryTime(visitorInfoId, enterTime);
             if (i > 0){
                 return Result.success();
             }
@@ -147,4 +145,27 @@ public class VisitorRegistController {
         }
         return Result.failure(ResultCode.SYSTEM_INNER_ERROR);
     }
+
+    /**
+     * @description: 访客进入时间
+     * @param
+     * @return
+     * @author Mr.Wang
+     * @date 2019/4/22 16:21
+     */
+    @ApiOperation(value = "访客离开时间记录")
+    @PostMapping(value = "/visitorLeaveTimes/{visitorInfoId}/{leaveTime}")
+    public Result visitorLeaveTimes(@ApiParam(name="visitorInfoId",value="访客ID",required=true) @PathVariable String visitorInfoId,
+                                            @ApiParam(name="leaveTime",value="访客离开时间(yyyy-MM-dd HH:mm:ss)", required=true) @PathVariable Date leaveTime){
+        try {
+            int i = visitorRegistService.visitorLeaveTime(visitorInfoId, leaveTime);
+            if (i > 0){
+                return Result.success();
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+        return Result.failure(ResultCode.SYSTEM_INNER_ERROR);
+    }
+
 }

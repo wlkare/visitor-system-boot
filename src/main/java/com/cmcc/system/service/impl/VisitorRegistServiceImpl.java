@@ -153,19 +153,30 @@ public class VisitorRegistServiceImpl implements VisitorRegistService {
     }
 
     @Override
-    public int visitorEntryAndLeaveTimes(String visitorInfoId, Date enterTime, Date leaveTime) {
+    public int visitorEntryTime(String visitorInfoId, Date enterTime) {
 
         VisitorInfo visitorInfo = visitorInfoDao.selectByPrimaryKey(visitorInfoId);
 
         if (enterTime != null){
             visitorInfo.setEntryTime(enterTime);
         }
+
+        return visitorInfoDao.updateByPrimaryKeySelective(visitorInfo);
+    }
+
+    @Override
+    public int visitorLeaveTime(String visitorInfoId, Date leaveTime) {
+
+        VisitorInfo visitorInfo = visitorInfoDao.selectByPrimaryKey(visitorInfoId);
+
         if (leaveTime != null){
             visitorInfo.setDepartureTime(leaveTime);
         }
 
         return visitorInfoDao.updateByPrimaryKeySelective(visitorInfo);
     }
+
+
 
 
 }

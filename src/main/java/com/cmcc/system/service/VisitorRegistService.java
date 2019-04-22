@@ -57,7 +57,9 @@ public interface VisitorRegistService {
      * @author Mr.Wang
      * @date 2019/4/22 16:13
      */
-    int visitorEntryAndLeaveTimes(String visitorInfoId, Date enterTime, Date leaveTime);
+    int visitorEntryTime(String visitorInfoId, Date enterTime);
+
+    int visitorLeaveTime(String visitorInfoId, Date leaveTime);
 }
 
 
