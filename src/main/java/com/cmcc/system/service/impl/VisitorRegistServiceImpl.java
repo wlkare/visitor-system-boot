@@ -27,11 +27,6 @@ public class VisitorRegistServiceImpl implements VisitorRegistService {
     VisitorRegistDao visitorRegistDao;
 
     @Override
-    public List<ApproalInfoVo> queryApproalHistory(String phoneNumber, String visitorRegistId, boolean visitorType) {
-        return null;
-    }
-
-    @Override
     public int saveVisitorInfo(VisitorInfoVo visitorInfoVo) {
         VisitorRegist visitorRegist = new VisitorRegist();
         int t = 0;
@@ -93,7 +88,13 @@ public class VisitorRegistServiceImpl implements VisitorRegistService {
             ApplicantVo applicant = new ApplicantVo();
 
             //获取申请人
-            VisitorInfo visitorInfo = visitorInfoDao.selectApplicant(visitorRegist.getVisitorRegistId(), true);
+            VisitorInfo visitorInfo = visitorInfoDao.selectApplicant(visitorRegist.getVisitorRegistId(), "0");
+
+            //申请人id
+            applicant.setVisitorInfoId(visitorInfo.getVisitorInfoId());
+
+            //登记表单id
+            applicant.setVisitorRegistId(visitorInfo.getVisitorRegistId());
 
             //申请人姓名
             applicant.setVisitorName(visitorInfo.getVisitorName());
@@ -112,4 +113,59 @@ public class VisitorRegistServiceImpl implements VisitorRegistService {
 
         return applicantVos;
     }
+
+    @Override
+    public ApproalInfoVo visitorDetails(String visitorInfoId) {
+
+        VisitorInfo visitorInfo = visitorInfoDao.selectByPrimaryKey(visitorInfoId);
+
+        VisitorRegist visitorRegist = visitorRegistDao.selectByPrimaryKey(visitorInfo.getVisitorRegistId());
+
+        //获取随从人员人数
+        int entourages = visitorInfoDao.countEntourage(visitorInfo.getVisitorRegistId());
+
+        ApproalInfoVo approalInfoVo = new ApproalInfoVo();
+
+        approalInfoVo.setVisitorName(visitorInfo.getVisitorName());
+        approalInfoVo.setProcessApprovalStatus(visitorRegist.getProcessApprovalStatus());
+        approalInfoVo.setVisitorPhonenumber(visitorInfo.getVisitorPhonenumber());
+        approalInfoVo.setVisitorIdcard(visitorInfo.getVisitorIdcard());
+        approalInfoVo.setVisitorCompany(visitorInfo.getVisitorCompany());
+        approalInfoVo.setCount(entourages-1);
+        approalInfoVo.setEntryTime(visitorInfo.getEntryTime());
+        approalInfoVo.setDepartureTime(visitorInfo.getDepartureTime());
+        approalInfoVo.setVisitorPurpose(visitorRegist.getVisitorPurpose());
+        approalInfoVo.setReceiverName(visitorRegist.getReceiverName());
+        approalInfoVo.setReceiverPhoneNumber(visitorRegist.getReceiverPhoneNumber());
+
+        return approalInfoVo;
+    }
+
+    @Override
+    public int apprrovalProcess(String visitorRegistId,Byte status) {
+
+        VisitorRegist visitorRegist = visitorRegistDao.selectByPrimaryKey(visitorRegistId);
+
+        visitorRegist.setProcessApprovalStatus(status);
+        visitorRegist.setApprovalTime(new Date());
+
+        return visitorRegistDao.updateByPrimaryKey(visitorRegist);
+    }
+
+    @Override
+    public int visitorEntryAndLeaveTimes(String visitorInfoId, Date enterTime, Date leaveTime) {
+
+        VisitorInfo visitorInfo = visitorInfoDao.selectByPrimaryKey(visitorInfoId);
+
+        if (enterTime != null){
+            visitorInfo.setEntryTime(enterTime);
+        }
+        if (leaveTime != null){
+            visitorInfo.setDepartureTime(leaveTime);
+        }
+
+        return visitorInfoDao.updateByPrimaryKeySelective(visitorInfo);
+    }
+
+
 }

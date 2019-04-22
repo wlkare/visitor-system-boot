@@ -6,7 +6,8 @@ import java.util.Date;
 public class VisitorInfo {
     private String visitorInfoId;
 
-    private Boolean visitorType;
+    //0:申请人，1:随从人员
+    private String visitorType;
 
     private String visitorRegistId;
 
@@ -30,11 +31,11 @@ public class VisitorInfo {
         this.visitorInfoId = visitorInfoId == null ? null : visitorInfoId.trim();
     }
 
-    public Boolean getVisitorType() {
+    public String getVisitorType() {
         return visitorType;
     }
 
-    public void setVisitorType(Boolean visitorType) {
+    public void setVisitorType(String visitorType) {
         this.visitorType = visitorType;
     }
 
@@ -97,7 +98,7 @@ public class VisitorInfo {
     public VisitorInfo() {
     }
 
-    public VisitorInfo(Boolean visitorType, String visitorName, String visitorPhonenumber) {
+    public VisitorInfo(String visitorType, String visitorName, String visitorPhonenumber) {
         this.visitorType = visitorType;
         this.visitorName = visitorName;
         this.visitorPhonenumber = visitorPhonenumber;

@@ -3,7 +3,7 @@
 <mapper namespace="com.cmcc.system.dao.VisitorInfoDao">
   <resultMap id="BaseResultMap" type="com.cmcc.system.entity.VisitorInfo">
     <id column="visitor_info_id" jdbcType="VARCHAR" property="visitorInfoId" />
-    <result column="visitor_type" jdbcType="BIT" property="visitorType" />
+    <result column="visitor_type" jdbcType="VARCHAR" property="visitorType" />
     <result column="visitor_regist_id" jdbcType="VARCHAR" property="visitorRegistId" />
     <result column="visitor_name" jdbcType="VARCHAR" property="visitorName" />
     <result column="visitor_phonenumber" jdbcType="VARCHAR" property="visitorPhonenumber" />
@@ -31,7 +31,7 @@
       visitor_name, visitor_phonenumber, visitor_idcard, 
       visitor_company, entry_time, departure_time
       )
-    values (#{visitorInfoId,jdbcType=VARCHAR}, #{visitorType,jdbcType=BIT}, #{visitorRegistId,jdbcType=VARCHAR}, 
+    values (#{visitorInfoId,jdbcType=VARCHAR}, #{visitorType,jdbcType=VARCHAR}, #{visitorRegistId,jdbcType=VARCHAR}, 
       #{visitorName,jdbcType=VARCHAR}, #{visitorPhonenumber,jdbcType=VARCHAR}, #{visitorIdcard,jdbcType=VARCHAR}, 
       #{visitorCompany,jdbcType=VARCHAR}, #{entryTime,jdbcType=TIMESTAMP}, #{departureTime,jdbcType=TIMESTAMP}
       )
@@ -72,7 +72,7 @@
         #{visitorInfoId,jdbcType=VARCHAR},
       </if>
       <if test="visitorType != null">
-        #{visitorType,jdbcType=BIT},
+        #{visitorType,jdbcType=VARCHAR},
       </if>
       <if test="visitorRegistId != null">
         #{visitorRegistId,jdbcType=VARCHAR},
@@ -101,7 +101,7 @@
     update visitor_info
     <set>
       <if test="visitorType != null">
-        visitor_type = #{visitorType,jdbcType=BIT},
+        visitor_type = #{visitorType,jdbcType=VARCHAR},
       </if>
       <if test="visitorRegistId != null">
         visitor_regist_id = #{visitorRegistId,jdbcType=VARCHAR},
@@ -129,7 +129,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.cmcc.system.entity.VisitorInfo">
     update visitor_info
-    set visitor_type = #{visitorType,jdbcType=BIT},
+    set visitor_type = #{visitorType,jdbcType=VARCHAR},
       visitor_regist_id = #{visitorRegistId,jdbcType=VARCHAR},
       visitor_name = #{visitorName,jdbcType=VARCHAR},
       visitor_phonenumber = #{visitorPhonenumber,jdbcType=VARCHAR},
@@ -142,7 +142,7 @@
 
   <!--通过登记ID计算访客人数-->
   <select id="countEntourage" resultType="int">
-    select count (*) from visitor_info
+    select count(visitor_regist_id) from visitor_info
     where visitor_regist_id = #{visitorRegistId,jdbcType=VARCHAR}
   </select>
 
@@ -152,6 +152,6 @@
     <include refid="Base_Column_List" />
     from visitor_info
     where visitor_regist_id = #{visitorRegistId,jdbcType=VARCHAR}
-    and visitor_type = #{visitorType,jdbcType=BIT}
+    and visitor_type = #{visitorType,jdbcType=VARCHAR}
   </select>
 </mapper>

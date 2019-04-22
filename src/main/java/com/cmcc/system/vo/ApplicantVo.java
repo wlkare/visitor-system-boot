@@ -11,6 +11,12 @@ import java.util.Date;
  **/
 public class ApplicantVo {
 
+    //申请人id
+    private String visitorInfoId;
+
+    //登记表单id
+    private String visitorRegistId;
+
     private String visitorName;
 
     //审批状态，0：待审批，1：同意，2：拒绝, 3:已结束
@@ -57,6 +63,22 @@ public class ApplicantVo {
         this.processApprovalStatus = processApprovalStatus;
         this.entryTime = entryTime;
         this.departureTime = departureTime;
+    }
+
+    public String getVisitorInfoId() {
+        return visitorInfoId;
+    }
+
+    public void setVisitorInfoId(String visitorInfoId) {
+        this.visitorInfoId = visitorInfoId;
+    }
+
+    public String getVisitorRegistId() {
+        return visitorRegistId;
+    }
+
+    public void setVisitorRegistId(String visitorRegistId) {
+        this.visitorRegistId = visitorRegistId;
     }
 
     public ApplicantVo() {

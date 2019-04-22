@@ -32,14 +32,16 @@ public class VisitorSystemBootApplicationTests {
     @Test
     public void contextLoads() {
 
-        VisitorInfo visitorInfo1 = new VisitorInfo(true, "wang", "13213464");
-        VisitorInfo visitorInfo2 = new VisitorInfo(false, "liu", "1454213464");
+        VisitorInfo visitorInfo1 = new VisitorInfo("0", "mayun", "98983464");
+        VisitorInfo visitorInfo2 = new VisitorInfo("1", "liu", "1454213464");
+        VisitorInfo visitorInfo3 = new VisitorInfo("1", "zhangsan", "48679321");
 
         ArrayList<VisitorInfo> visitors = new ArrayList<>();
         visitors.add(visitorInfo1);
         visitors.add(visitorInfo2);
+        visitors.add(visitorInfo3);
 
-        VisitorInfoVo visitorInfoVo = new VisitorInfoVo(visitors,"面试","com2","13465483");
+        VisitorInfoVo visitorInfoVo = new VisitorInfoVo(visitors,"送饭","comabc","89898999");
 
         visitorRegistService.saveVisitorInfo(visitorInfoVo);
     }
@@ -57,7 +59,7 @@ public class VisitorSystemBootApplicationTests {
             //获取申请人
             System.out.println(visitorRegist.getVisitorRegistId());
             //VisitorInfo visitorInfo = visitorInfoDao.selectApplicant(visitorRegist.getVisitorRegistId(), true);
-            visitorInfoDao.selectApplicant(visitorRegist.getVisitorRegistId(),true);
+            visitorInfoDao.selectApplicant(visitorRegist.getVisitorRegistId(),"0");
 
         }
     }

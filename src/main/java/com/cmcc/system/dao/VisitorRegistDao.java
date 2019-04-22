@@ -21,4 +21,5 @@ public interface VisitorRegistDao {
 
     //接待人通过手机号查询所有历史访客
     List<VisitorRegist> selectByPhoneNumber(String phoneNumber);
+
 }

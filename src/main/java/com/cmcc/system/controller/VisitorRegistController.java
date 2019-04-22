@@ -2,8 +2,10 @@ package com.cmcc.system.controller;
 
 import com.cmcc.common.bean.Result;
 import com.cmcc.common.bean.ResultCode;
+import com.cmcc.system.entity.VisitorInfo;
 import com.cmcc.system.service.VisitorRegistService;
 import com.cmcc.system.vo.ApplicantVo;
+import com.cmcc.system.vo.ApproalInfoVo;
 import com.cmcc.system.vo.VisitorInfoVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -13,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,45 +35,17 @@ public class VisitorRegistController {
     @Autowired
     private VisitorRegistService visitorRegistService;
 
-    /**
- 　　* @description: 查询当前租户下所有历史访客接口
- 　　* @param
- 　　* @return
- 　　* @author Mr.Wang
- 　　* @date 2019/4/18 9:05
-     */
-    @ApiOperation(value = "接待人查询历史访客记录")
-    @GetMapping("/getReceiverHistoryVisitors")
-    public Result getReceiverHistoryVisitors(@ApiParam(name="phoneNumber",value="接待人手机号",required=true)
-                                             @PathVariable String phoneNumber){
-        return Result.success();
-    }
 
 
     /**
-     * @description: 新增访客申请
-     * @param
-     * @return
-     * @author Mr.Wang
-     * @date 2019/4/18 9:14
-     */
-    @ApiOperation(value = "新增访客申请")
-    @GetMapping("/addVisitorApproval")
-    public Result addVisitorApproval(){
-        return Result.success();
-    }
-
-
-
-    /**
-     * @description: 保存访客信息表单
+     * @description: 保存访客信息表单 todo （访客信息填写有bug）
      * @param
      * @return
      * @author Mr.Wang
      * @date 2019/4/19 9:24
      */
     @ApiOperation(value = "保存访客申请信息")
-    @GetMapping("/saveVisitorApproval")
+    @PutMapping("/saveVisitorApproval")
     public Result savaVisitorApproval(VisitorInfoVo visitorInfoVo){
 
         try {
@@ -101,6 +76,72 @@ public class VisitorRegistController {
         try {
             List<ApplicantVo> applicantVos = visitorRegistService.queryHistoryVisitors(phoneNumber);
             return Result.success(applicantVos);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+        return Result.failure(ResultCode.SYSTEM_INNER_ERROR);
+    }
+
+    /**
+     * @description: 访客详情展示
+     * @param
+     * @return
+     * @author Mr.Wang
+     * @date 2019/4/22 10:33
+     */
+    @ApiOperation(value = "查看访客详情")
+    @GetMapping("/queryHistoryVisitorsDetails/{visitorInfoId}")
+    public Result queryHistoryVisitorsDetails(@ApiParam(name="visitorInfoId",value="申请人ID",required=true)
+                                               @PathVariable String visitorInfoId){
+
+        try {
+            ApproalInfoVo approalInfoVo = visitorRegistService.visitorDetails(visitorInfoId);
+            return Result.success(approalInfoVo);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+        return Result.failure(ResultCode.SYSTEM_INNER_ERROR);
+    }
+
+    /**
+     * @description: 审批处理，todo 审批后需发送短信提醒申请人
+     * @param
+     * @return
+     * @author Mr.Wang
+     * @date 2019/4/22 10:56
+     */
+    @ApiOperation(value = "接待人进行审批，即更改审批状态")
+    @PostMapping("/apprrovalProcess/{visitorRegistId}/{status}")
+    public Result apprrovalProcess(@ApiParam(name="visitorRegistId",value="登记ID",required=true) @PathVariable String visitorRegistId,
+                                   @ApiParam(name="status",value="审批状态，0：待审批，1：同意，2：拒绝, 3:已结束",required=true) @PathVariable Byte status){
+        try {
+            int i = visitorRegistService.apprrovalProcess(visitorRegistId, status);
+            if (i > 0){
+                return Result.success();
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+        return Result.failure(ResultCode.SYSTEM_INNER_ERROR);
+    }
+
+    /**
+     * @description: 访客出入时间
+     * @param
+     * @return
+     * @author Mr.Wang
+     * @date 2019/4/22 16:21
+     */
+    @ApiOperation(value = "访客出入时间记录")
+    @PostMapping(value = {"/visitorEntryAndLeaveTimes/{visitorInfoId}/enterTime/{leaveTime}","/visitorEntryAndLeaveTimes/{visitorInfoId}/{enterTime}"})
+    public Result visitorEntryAndLeaveTimes(@ApiParam(name="visitorInfoId",value="访客ID",required=true) @PathVariable String visitorInfoId,
+                                            @ApiParam(name="enterTime",value="访客进入时间(进出时间二选一)",required=false) @PathVariable(value = "enterTime",required = false) Date enterTime,
+                                            @ApiParam(name="leaveTime",value="访客离开时间(进出时间二选一)",required=false) @PathVariable(value = "leaveTime",required = false) Date leaveTime){
+        try {
+            int i = visitorRegistService.visitorEntryAndLeaveTimes(visitorInfoId, enterTime, leaveTime);
+            if (i > 0){
+                return Result.success();
+            }
         } catch (Exception e) {
             log.error(e.getMessage());
         }

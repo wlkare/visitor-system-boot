@@ -6,17 +6,27 @@ public class ApproalInfoVo {
 
     private String visitorName;
 
+    //审批状态，0：待审批，1：同意，2：拒绝, 3:已结束
+    private Byte processApprovalStatus;
+
     private String visitorPhonenumber;
 
     private String visitorIdcard;
 
     private String visitorCompany;
 
+    //随从人员人数
+    private int count;
+
     private Date entryTime;
 
     private Date departureTime;
 
     private String visitorPurpose;
+
+    private String receiverName;
+
+    private String receiverPhoneNumber;
 
     public String getVisitorName() {
         return visitorName;
@@ -72,5 +82,37 @@ public class ApproalInfoVo {
 
     public void setVisitorPurpose(String visitorPurpose) {
         this.visitorPurpose = visitorPurpose;
+    }
+
+    public Byte getProcessApprovalStatus() {
+        return processApprovalStatus;
+    }
+
+    public void setProcessApprovalStatus(Byte processApprovalStatus) {
+        this.processApprovalStatus = processApprovalStatus;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public String getReceiverName() {
+        return receiverName;
+    }
+
+    public void setReceiverName(String receiverName) {
+        this.receiverName = receiverName;
+    }
+
+    public String getReceiverPhoneNumber() {
+        return receiverPhoneNumber;
+    }
+
+    public void setReceiverPhoneNumber(String receiverPhoneNumber) {
+        this.receiverPhoneNumber = receiverPhoneNumber;
     }
 }
