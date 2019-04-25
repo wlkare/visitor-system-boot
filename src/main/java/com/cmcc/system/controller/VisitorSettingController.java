@@ -11,10 +11,7 @@ import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -39,9 +36,9 @@ public class VisitorSettingController {
      * 来访目的查询
      */
     @ApiOperation(value = "查询所有来访目的")
-    @GetMapping("/getVisitPurpose/{lesseeId}")
+    @GetMapping("/getVisitPurpose")
     public Result getVisitorPurpose(@ApiParam(name="lesseeId",value="租户编号",required=true)
-                                        @PathVariable String lesseeId){
+                                         @RequestParam String lesseeId){
         try {
             List<VisitorSetting> purposes = visitorSettingService.selectAllPurposeByLesseeId(lesseeId);
             if (purposes.size() > 0){
@@ -63,7 +60,7 @@ public class VisitorSettingController {
      * @date 2019/4/18 10:28
      */
     @ApiOperation(value = "管理员添加来访目的")
-    @GetMapping("/addVisitPurpose")
+    @PostMapping("/addVisitPurpose")
     public Result addVisitorPurpose(VisitorSetting visitorSetting){
 
         try {
@@ -81,6 +78,29 @@ public class VisitorSettingController {
         return Result.failure(ResultCode.SYSTEM_INNER_ERROR);
     }
 
+    /**
+     * @description: 删除来访目的
+     * @param
+     * @return
+     * @author Mr.Wang
+     * @date 2019/4/25 16:41
+     */
+    @ApiOperation(value = "管理员添加来访目的")
+    @DeleteMapping("/deleteVisitPurpose")
+    public Result deleteVisitorPurpose(@ApiParam(name="visitorPurposeId",value="访客目的ID",required=true)
+                                           @RequestParam String visitorPurposeId){
+        try {
+            int i = visitorSettingService.deleteByPrimaryKey(visitorPurposeId);
+            if (i > 0){
+                return Result.success();
+            }else {
+                return Result.failure(ResultCode.DATA_IS_WRONG);
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+        return Result.failure(ResultCode.SYSTEM_INNER_ERROR);
+    }
 
 
 

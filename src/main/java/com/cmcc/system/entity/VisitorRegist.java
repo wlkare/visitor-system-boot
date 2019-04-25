@@ -13,6 +13,9 @@ public class VisitorRegist {
 
     private String receiverPhoneNumber;
 
+    //预约拜访时间
+    private Date visitingTime;
+
     private Date creationTime;
 
     private Date approvalTime;
@@ -92,5 +95,13 @@ public class VisitorRegist {
 
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
+    }
+
+    public Date getVisitingTime() {
+        return visitingTime;
+    }
+
+    public void setVisitingTime(Date visitingTime) {
+        this.visitingTime = visitingTime;
     }
 }

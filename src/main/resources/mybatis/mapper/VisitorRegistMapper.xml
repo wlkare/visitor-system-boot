@@ -7,13 +7,42 @@
     <result column="lessee_id" jdbcType="VARCHAR" property="lesseeId" />
     <result column="receiver_name" jdbcType="VARCHAR" property="receiverName" />
     <result column="receiver_phone_number" jdbcType="VARCHAR" property="receiverPhoneNumber" />
+    <result column="visiting_time" jdbcType="TIMESTAMP" property="visitingTime" />
     <result column="creation_time" jdbcType="TIMESTAMP" property="creationTime" />
     <result column="approval_time" jdbcType="TIMESTAMP" property="approvalTime" />
     <result column="process_approval_status" jdbcType="TINYINT" property="processApprovalStatus" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
+  
+  <resultMap id="VistorHistoryResultMap" type="com.cmcc.system.vo.HistorySearchVo">
+    <id column="visitor_regist_id" jdbcType="VARCHAR" property="visitorRegistId" />
+    <result column="visitor_purpose" jdbcType="VARCHAR" property="visitorPurpose" />
+    <result column="lessee_id" jdbcType="VARCHAR" property="lesseeId" />
+    <result column="receiver_name" jdbcType="VARCHAR" property="receiverName" />
+    <result column="receiver_phone_number" jdbcType="VARCHAR" property="receiverPhoneNumber" />
+    <result column="visiting_time" jdbcType="TIMESTAMP" property="visitingTime" />
+    <result column="creation_time" jdbcType="TIMESTAMP" property="creationTime" />
+    <result column="approval_time" jdbcType="TIMESTAMP" property="approvalTime" />
+    <result column="process_approval_status" jdbcType="TINYINT" property="processApprovalStatus" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="visitor_info_id" jdbcType="VARCHAR" property="visitorInfoId" />
+    <result column="visitor_type" jdbcType="VARCHAR" property="visitorType" />
+    <result column="visitor_name" jdbcType="VARCHAR" property="visitorName" />
+    <result column="visitor_phonenumber" jdbcType="VARCHAR" property="visitorPhonenumber" />
+    <result column="visitor_idcard" jdbcType="VARCHAR" property="visitorIdcard" />
+    <result column="visitor_company" jdbcType="VARCHAR" property="visitorCompany" />
+    <result column="entry_time" jdbcType="TIMESTAMP" property="entryTime" />
+    <result column="departure_time" jdbcType="TIMESTAMP" property="departureTime" />
+  </resultMap>
+
+  <sql id="His_List">
+    visitor_purpose, lessee_id, receiver_name, receiver_phone_number, visiting_time,
+    creation_time, approval_time, process_approval_status, remark,visitor_info_id, visitor_type, visitor_name, visitor_phonenumber,
+    visitor_idcard, visitor_company, entry_time, departure_time
+  </sql>
+
   <sql id="Base_Column_List">
-    visitor_regist_id, visitor_purpose, lessee_id, receiver_name, receiver_phone_number, 
+    visitor_regist_id, visitor_purpose, lessee_id, receiver_name, receiver_phone_number, visiting_time,
     creation_time, approval_time, process_approval_status, remark
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -28,11 +57,11 @@
   </delete>
   <insert id="insert" parameterType="com.cmcc.system.entity.VisitorRegist">
     insert into visitor_registration (visitor_regist_id, visitor_purpose, 
-      lessee_id, receiver_name, receiver_phone_number, 
+      lessee_id, receiver_name, receiver_phone_number, visiting_time,
       creation_time, approval_time, process_approval_status, 
       remark)
     values (#{visitorRegistId,jdbcType=VARCHAR}, #{visitorPurpose,jdbcType=VARCHAR}, 
-      #{lesseeId,jdbcType=VARCHAR}, #{receiverName,jdbcType=VARCHAR}, #{receiverPhoneNumber,jdbcType=VARCHAR}, 
+      #{lesseeId,jdbcType=VARCHAR}, #{receiverName,jdbcType=VARCHAR}, #{receiverPhoneNumber,jdbcType=VARCHAR}, #{visitingTime,jdbcType=TIMESTAMP},
       #{creationTime,jdbcType=TIMESTAMP}, #{approvalTime,jdbcType=TIMESTAMP}, #{processApprovalStatus,jdbcType=TINYINT}, 
       #{remark,jdbcType=VARCHAR})
   </insert>
@@ -53,6 +82,9 @@
       </if>
       <if test="receiverPhoneNumber != null">
         receiver_phone_number,
+      </if>
+      <if test="visitingTime != null">
+        visiting_time,
       </if>
       <if test="creationTime != null">
         creation_time,
@@ -83,6 +115,9 @@
       <if test="receiverPhoneNumber != null">
         #{receiverPhoneNumber,jdbcType=VARCHAR},
       </if>
+      <if test="visitingTime != null">
+        #{visitingTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="creationTime != null">
         #{creationTime,jdbcType=TIMESTAMP},
       </if>
@@ -112,6 +147,9 @@
       <if test="receiverPhoneNumber != null">
         receiver_phone_number = #{receiverPhoneNumber,jdbcType=VARCHAR},
       </if>
+      <if test="visitingTime != null">
+        visiting_time = #{visitingTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="creationTime != null">
         creation_time = #{creationTime,jdbcType=TIMESTAMP},
       </if>
@@ -133,6 +171,7 @@
       lessee_id = #{lesseeId,jdbcType=VARCHAR},
       receiver_name = #{receiverName,jdbcType=VARCHAR},
       receiver_phone_number = #{receiverPhoneNumber,jdbcType=VARCHAR},
+      visiting_time = #{visitingTime,jdbcType=TIMESTAMP},
       creation_time = #{creationTime,jdbcType=TIMESTAMP},
       approval_time = #{approvalTime,jdbcType=TIMESTAMP},
       process_approval_status = #{processApprovalStatus,jdbcType=TINYINT},
@@ -146,5 +185,85 @@
     <include refid="Base_Column_List" />
     from visitor_registration
     where receiver_phone_number = #{receiverPhoneNumber,jdbcType=VARCHAR}
+  </select>
+
+  <!--管理员查询历史访客记录-->
+  <select id="getPageHistory" parameterType="com.cmcc.system.vo.QueryConditionsVo" resultMap="VistorHistoryResultMap">
+    select vr.visitor_regist_id,
+    <include refid="His_List"/>
+    from visitor_info vi, visitor_registration vr
+    where
+      vr.visitor_regist_id = vi.visitor_regist_id
+    <if test="lesseeId != null and lesseeId != '' ">
+      and vr.lessee_id = #{lesseeId}
+    </if>
+    <if test="visitorRegistId != null and visitorRegistId != '' ">
+      and vr.visitor_regist_id = #{visitorRegistId}
+    </if>
+    <if test="visitorInfoId != null and visitorInfoId != '' ">
+      and vi.visitor_info_id = #{visitorInfoId}
+    </if>
+    <if test="receiverName != null and receiverName != '' ">
+      and vr.receiver_name = "%"#{receiverName}"%"
+    </if>
+    <if test="receiverPhoneNumber != null and receiverPhoneNumber != '' ">
+      and vr.receiver_phone_number = #{receiverPhoneNumber}
+    </if>
+    <if test="visitorName != null and visitorName != '' ">
+      and vi.visitor_name = "%"#{visitorName}"%"
+    </if>
+    <if test="vistingStartTime != null and visitingEndTime != null">
+      and vr.visiting_time between #{vistingStartTime} and #{visitingEndTime}
+    </if>
+    <if test="vistingStartTime != null and visitingEndTime != null ">
+      and vr.visiting_time >= #{vistingStartTime}
+    </if>
+    <if test="visitingEndTime != null and vistingStartTime != null ">
+      and vr.visiting_time &lt;= #{visitingEndTime}
+    </if>
+    order by vr.creation_time desc
+  </select>
+
+  <!--导出访客记录-->
+  <select id="getExportVisitorsHistory" parameterType="com.cmcc.system.vo.QueryConditionsVo" resultType="java.util.Map">
+    select vr.visitor_regist_id as visitorRegistId,
+           vi.visitor_name as visitorName,
+           vi.visitor_type as visitorType,
+           visiting_time as visitingTime,
+           visitor_purpose as visitorPurpose,
+           vr.receiver_name as receiverName,
+           vr.process_approval_status as processApprovalStatus
+
+    from visitor_info vi, visitor_registration vr
+    where
+    vi.visitor_regist_id = vr.visitor_regist_id
+    <if test="lesseeId != null and lesseeId != '' ">
+      and vr.lessee_id = #{lesseeId}
+    </if>
+    <if test="visitorRegistId != null and visitorRegistId != '' ">
+      and vr.visitor_regist_id = #{visitorRegistId}
+    </if>
+    <if test="visitorInfoId != null and visitorInfoId != '' ">
+      and vi.visitor_info_id = #{visitorInfoId}
+    </if>
+    <if test="receiverName != null and receiverName != '' ">
+      and vr.receiver_name = "%"#{receiverName}"%"
+    </if>
+    <if test="receiverPhoneNumber != null and receiverPhoneNumber != '' ">
+      and vr.receiver_phone_number = #{receiverPhoneNumber}
+    </if>
+    <if test="visitorName != null and visitorName != '' ">
+      and vi.visitor_name = "%"#{visitorName}"%"
+    </if>
+    <if test="vistingStartTime != null and visitingEndTime != null">
+      and vr.visiting_time between #{vistingStartTime} and #{visitingEndTime}
+    </if>
+    <if test="vistingStartTime != null and visitingEndTime != null ">
+      and vr.visiting_time >= #{vistingStartTime}
+    </if>
+    <if test="visitingEndTime != null and vistingStartTime != null ">
+      and vr.visiting_time &lt;= #{visitingEndTime}
+    </if>
+    order by vr.creation_time desc
   </select>
 </mapper>

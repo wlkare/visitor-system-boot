@@ -34,4 +34,9 @@ public class VisitorSettingServiceImpl implements VisitorSettingService {
         return i;
     }
 
+    @Override
+    public int deleteByPrimaryKey(String visitorPurposeId) {
+        return visitorSettingDao.deleteByPrimaryKey(visitorPurposeId);
+    }
+
 }

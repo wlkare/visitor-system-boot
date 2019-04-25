@@ -6,9 +6,9 @@ import com.cmcc.system.dao.VisitorRegistDao;
 import com.cmcc.system.entity.VisitorInfo;
 import com.cmcc.system.entity.VisitorRegist;
 import com.cmcc.system.service.VisitorRegistService;
-import com.cmcc.system.vo.ApplicantVo;
-import com.cmcc.system.vo.ApproalInfoVo;
-import com.cmcc.system.vo.VisitorInfoVo;
+import com.cmcc.system.vo.*;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class VisitorRegistServiceImpl implements VisitorRegistService {
@@ -40,6 +41,10 @@ public class VisitorRegistServiceImpl implements VisitorRegistService {
         }
         visitorRegist.setVisitorRegistId(IdGenerateUtil.uuid3());
         visitorRegist.setCreationTime(new Date());
+
+        //增加visitingtime,预约时间
+        visitorRegist.setVisitingTime(visitorInfoVo.getVisitingTime());
+
         visitorRegist.setLesseeId(visitorInfoVo.getLesseeId());
         //表单提交时设定审批状态为0：待审批
         visitorRegist.setProcessApprovalStatus((byte)0);
@@ -176,7 +181,30 @@ public class VisitorRegistServiceImpl implements VisitorRegistService {
         return visitorInfoDao.updateByPrimaryKeySelective(visitorInfo);
     }
 
+    @Override
+    public Page<HistorySearchVo> getPageHistory(int pageNum, int pageSize, QueryConditionsVo queryConditionsVo) {
 
+        PageHelper.startPage(pageNum, pageSize);
+
+        return visitorRegistDao.getPageHistory(queryConditionsVo);
+    }
+
+    @Override
+    public List<Map<String, Object>> getExportVisitorsHistory(QueryConditionsVo queryConditionsVo) {
+        return visitorRegistDao.getExportVisitorsHistory(queryConditionsVo);
+    }
+
+    @Override
+    public int deleteVisitorRegistInfos(String visitorRegistId) {
+
+        int i = visitorRegistDao.deleteByPrimaryKey(visitorRegistId);
+
+        if (i > 0){
+            i = visitorInfoDao.deleteByRegistId(visitorRegistId);
+        }
+
+        return i;
+    }
 
 
 }

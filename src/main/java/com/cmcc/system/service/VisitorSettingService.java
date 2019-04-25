@@ -20,4 +20,7 @@ public interface VisitorSettingService {
 
     //增加来访目的
     int addVisitorPurpose(VisitorSetting record);
+
+    //删除
+    int deleteByPrimaryKey(String visitorPurposeId);
 }

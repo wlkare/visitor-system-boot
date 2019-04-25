@@ -154,4 +154,10 @@
     where visitor_regist_id = #{visitorRegistId,jdbcType=VARCHAR}
     and visitor_type = #{visitorType,jdbcType=VARCHAR}
   </select>
+
+  <!--删除访客信息通过登记ID-->
+  <delete id="deleteByRegistId" parameterType="java.lang.String">
+    delete from visitor_info
+    where visitor_regist_id = #{visitorRegistId,jdbcType=VARCHAR}
+  </delete>
 </mapper>

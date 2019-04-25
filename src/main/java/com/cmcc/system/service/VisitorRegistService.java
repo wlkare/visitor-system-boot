@@ -1,13 +1,11 @@
 package com.cmcc.system.service;
 
-import com.cmcc.system.entity.VisitorInfo;
-import com.cmcc.system.entity.VisitorRegist;
-import com.cmcc.system.vo.ApplicantVo;
-import com.cmcc.system.vo.ApproalInfoVo;
-import com.cmcc.system.vo.VisitorInfoVo;
+import com.cmcc.system.vo.*;
+import com.github.pagehelper.Page;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public interface VisitorRegistService {
 
@@ -60,6 +58,21 @@ public interface VisitorRegistService {
     int visitorEntryTime(String visitorInfoId, Date enterTime);
 
     int visitorLeaveTime(String visitorInfoId, Date leaveTime);
+
+    /**
+     * 管理员分页查询历史记录
+     */
+    Page<HistorySearchVo> getPageHistory(int pageNum, int pageSize, QueryConditionsVo queryConditionsVo);
+
+    /**
+     * 导出excel
+     */
+    List<Map<String, Object>> getExportVisitorsHistory(QueryConditionsVo queryConditionsVo);
+
+    /**
+     * 删除访客表单信息
+     */
+    int deleteVisitorRegistInfos(String visitorRegistId);
 }
 
 

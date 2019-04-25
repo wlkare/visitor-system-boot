@@ -32,6 +32,10 @@ public class VisitorInfoVo {
     @ApiModelProperty(value = "接待人手机号", name = "receiverPhoneNumber", required = true)
     private String receiverPhoneNumber;
 
+    //预约拜访时间
+    @ApiModelProperty(value = "预约时间", name = "visitingTime", required = true)
+    private Date visitingTime;
+
     @ApiParam(hidden = true)
     private Date creationTime;
 
@@ -102,15 +106,24 @@ public class VisitorInfoVo {
         return remark;
     }
 
+    public Date getVisitingTime() {
+        return visitingTime;
+    }
+
+    public void setVisitingTime(Date visitingTime) {
+        this.visitingTime = visitingTime;
+    }
+
     public void setRemark(String remark) {
         this.remark = remark;
     }
 
-    public VisitorInfoVo(List<VisitorInfo> visitorInfos, String visitorPurpose, String lesseeId, String receiverPhoneNumber) {
+    public VisitorInfoVo(List<VisitorInfo> visitorInfos, String visitorPurpose, String lesseeId, String receiverPhoneNumber, Date visitingTime) {
         this.visitorInfos = visitorInfos;
         this.visitorPurpose = visitorPurpose;
         this.lesseeId = lesseeId;
         this.receiverPhoneNumber = receiverPhoneNumber;
+        this.visitingTime = visitingTime;
     }
 
     public VisitorInfoVo() {

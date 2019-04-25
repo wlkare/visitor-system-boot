@@ -12,7 +12,7 @@ import java.io.UnsupportedEncodingException;
  * ClassName: ExcelUtil
  * 
  * @Description excel导出导出工具类
- * @author liuhaihe
+ * @author
  * @date 2019年3月27日
  */
 public class ExcelUtil {
@@ -22,7 +22,7 @@ public class ExcelUtil {
 	 * 
 	 * @Description 导入excel，传入文件与实体，返回解释与的实体集合
 	 * @return Map<String,List<Object>> 解释成功与失败的实体集合
-	 * @author liuhaihe
+	 * @author
 	 * @date 2019年3月27日
 	 */
 	
